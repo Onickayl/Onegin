@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <TXLib.h>
 
 
 int main()
 {
+
     FILE *file = fopen("Onegin.txt", "r");
 
     if (file == NULL)
@@ -12,17 +14,36 @@ int main()
         return 1;
     }
 
+    char* array[7] = {};
 
-    // сортировка по алфавиту   значит сравнить по символьно 'A' = 65, а 'G'= 71, 'g' = 103
+
+    for(int i = 0; i < 7; i ++)
+    {
+        char* buffer = (char*) calloc(500, sizeof(char));
+        fgets(buffer, 500, file);     // len of string <= 500
+        //printf("%p ", buffer);   // адрес, что лежит в €чейке buff
+        //printf("%p ", &buffer); // адрес €чейки buff
+        //printf("%d ", *buffer);   // код первой буквы строки
+        //printf("%c\n", *buffer);        // печатает букву
+        //printf("%s", buffer);     // печатает строку
+        array[i] = buffer;
+        //printf("%c\n", *array[i]);    // буква
+        //printf("%p\n", array[i]);
+    }
+
+    for(int i = 0; i < 7; i ++)
+        printf("%s", array[i]);
+
+
+
+
+
+    // getchar()
+
+
+    // сортировка по алфавиту
     // strcmp() - сравнение, возвращает разницу чисел > 0 первое больше, < 0 второе больше
 
-    int ch;
-    while ((ch = fgetc(file)) != EOF)
-    {
-        putchar(ch); // ¬ывод символа на экран     как вывести один символ? надо запихнуть сравнение
-
-    // накал€кать массив? куда запишу первые символы, а точнее их номера, а потом сортировка пузырьком?
-    }
 
 
     fclose(file);
