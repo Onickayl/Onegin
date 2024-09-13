@@ -14,6 +14,9 @@ int main()
         return 1;
     }
 
+
+    // создаю массив указателей array
+
     char* array[7] = {};
 
 
@@ -31,10 +34,43 @@ int main()
         //printf("%p\n", array[i]);
     }
 
-    for(int i = 0; i < 7; i ++)
-        printf("%s", array[i]);
+
+    // исходный текст
+
+    for(int j = 0; j < 7; j ++)
+        printf("%s", array[j]);
+
+    // сортировка
+
+    char* free_str = "";
 
 
+    for(int j = 0; j < 7; j ++)
+    {
+        for(int i = 0; i < 6; i ++)
+        {
+            if(strcmp(array[i], array[i+1]) > 0)
+            {
+                free_str = array[i+1];
+                array[i+1] = array[i];
+                array[i] = free_str;
+            }
+        }
+    }
+
+    printf("\n\n");
+
+
+    // отсортированный текст
+
+    for(int j = 0; j < 7; j ++)
+        printf("%s", array[j]);
+
+
+    fclose(file);
+    return 0;
+
+}
 
 
 
@@ -43,9 +79,3 @@ int main()
 
     // сортировка по алфавиту
     // strcmp() - сравнение, возвращает разницу чисел > 0 первое больше, < 0 второе больше
-
-
-
-    fclose(file);
-    return 0;
-}
