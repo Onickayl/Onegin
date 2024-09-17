@@ -3,6 +3,12 @@
 #include <TXLib.h>
 
 
+
+// ј может все маленькие:   int tolower(int с);
+
+// ¬озвращает true, если с - буква:   int isalpha(int с);
+
+
 int main()
 {
 
@@ -19,26 +25,51 @@ int main()
 
     char* array[7] = {};
 
+    printf("»сходник\n");
+
+    // read file and full of array
 
     for(int i = 0; i < 7; i ++)
     {
         char* buffer = (char*) calloc(500, sizeof(char));
         fgets(buffer, 500, file);     // len of string <= 500
+
         //printf("%p ", buffer);   // адрес, что лежит в €чейке buff
         //printf("%p ", &buffer); // адрес €чейки buff
+
         //printf("%d ", *buffer);   // код первой буквы строки
         //printf("%c\n", *buffer);        // печатает букву
+
+        printf("%s", buffer);
+
+        // превращение в маленькие
+        for(int k = 0; k < 500; k++)
+        {
+            buffer[k] = tolower(buffer[k]);
+            //printf("%c ", buffer[k]);
+        }
+
+
         //printf("%s", buffer);     // печатает строку
+
         array[i] = buffer;
+
         //printf("%c\n", *array[i]);    // буква
         //printf("%p\n", array[i]);
     }
 
 
+    printf("\n\n");
+
     // исходный текст
 
+    printf("ћаленькие\n");
     for(int j = 0; j < 7; j ++)
         printf("%s", array[j]);
+
+    // текст в больших буквах
+
+    //int toupper(int *buffer);
 
     // сортировка
 
@@ -62,7 +93,7 @@ int main()
 
 
     // отсортированный текст
-
+    printf("ќтсортированный\n");
     for(int j = 0; j < 7; j ++)
         printf("%s", array[j]);
 
@@ -71,6 +102,8 @@ int main()
     return 0;
 
 }
+
+
 
 
 
