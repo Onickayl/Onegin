@@ -4,9 +4,9 @@
 #include <ctype.h>
 
 
-struct arr_prt
+struct Arr_Ptr        // i need copy!
 {
-
+    char* ptr[3] = {};   //7
 };
 
 
@@ -15,15 +15,12 @@ struct arr_prt
 
 
 int My_strcmp(char* first_str, char* second_str);
-
-
-// Возвращает true, если с - буква:   int isalpha(int с);
+Arr_Ptr Permutator_str(Arr_Ptr array);
+void output(Arr_Ptr array);
 
 
 int main()
 {
-   // int if_letter = 0;
-
     FILE *file = fopen("Onegin.txt", "r");
 
     if (file == NULL)
@@ -35,7 +32,7 @@ int main()
 
     // создаю массив указателей array
 
-    char* array[3] = {};       //7
+    Arr_Ptr array;
 
 
 
@@ -44,48 +41,32 @@ int main()
     for(int i = 0; i < 3; i++)   //7
     {
         char* buffer = (char*) calloc (500, sizeof(char));      // null
+
+        if (buffer == NULL)
+        {
+            puts("He удалось выделить память. Программа завершена.");
+            return 0;
+        }
+
         fgets(buffer, 500, file);
 
-        array[i] = buffer;
+        array.ptr[i] = buffer;
 
     }
 
     printf("Исходник\n");
-    for(int i = 0; i < 3; i++)    //7
-    {
-        printf("%s", array[i]);
-    }
+    output(array);
 
     printf("\n\n");
 
-    char* free_str = "";
-
-    for(int j = 0; j < 3; j++)          //7
-    {
-        for(int i = 0; i + 1 < 3 ; i++)        //6
-        {
-            printf("array[i] = %s\n", array[i]);
-            printf("array[i+1] = %s\n", array[i+1]);
-
-
-            if(My_strcmp(array[i], array[i + 1]) > 0)        // my_strcmp
-            {
-                //printf("%d %d\n", i, j);
-                printf ("SWAP\n");
-                free_str = array[i+1];
-                array[i+1] = array[i];
-                array[i] = free_str;
-            }
-        }
-    }
-
+    // перестановщик
+    Permutator_str(array);
 
 
     // отсортированный текст
 
     printf("Отсортированный\n");
-    for(int j = 0; j < 3; j ++)     //7
-        printf("%s\n", array[j]);
+    output(array);
 
 
     fclose(file);
@@ -96,7 +77,7 @@ int main()
 
 
 
-int My_strcmp(char* first_str, char* second_str)
+int My_strcmp(Arr_Ptr array, int i, int j)
 {
 
     printf("first_str = %s\n", first_str);
@@ -120,14 +101,6 @@ int My_strcmp(char* first_str, char* second_str)
             }
         }
     }
-
- /*   0 1 2 3 4 5 6 7
-    - T o o   ? M U
-    0 1 1 1 0 0 1 1
-    - t o o   ? m u
-1)  t o o   ? m u
-4)  t o o ? m u      */
-
 
 
     for(int times = 0; times < 85; times++)
@@ -155,3 +128,37 @@ int My_strcmp(char* first_str, char* second_str)
 
 }
 
+Arr_Ptr Permutator_str(Arr_Ptr array)
+{
+
+    char* free_str = "";
+
+    for(int j = 0; j < 3; j++)          //7
+    {
+        for(int i = 0; i + 1 < 3 ; i++)        //6
+        {
+            printf("array[i] = %s\n", array.ptr[i]);
+            printf("array[i+1] = %s\n", array.ptr[i+1]);
+
+
+            if(My_strcmp(array, i, i+1) > 0)        // my_strcmp
+            {
+                //printf("%d %d\n", i, j);
+                printf ("SWAP\n");
+                free_str = array.ptr[i+1];
+                array.ptr[i+1] = array.ptr[i];
+                array.ptr[i] = free_str;
+            }
+        }
+    }
+
+    return array;
+}
+
+void output(Arr_Ptr array)
+{
+    for(int i = 0; i < 3; i++)    //7
+    {
+        printf("%s\n", array.ptr[i]);
+    }
+}
