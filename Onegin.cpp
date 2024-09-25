@@ -18,8 +18,10 @@ int My_strcmp(Arr_Ptr arr, int num_str, int num_next_str);
 Arr_Ptr Permutator_str(Arr_Ptr* array);
 void Output(Arr_Ptr* array);
 Arr_Ptr* Write_in_array(FILE* file, Arr_Ptr* array);
-Arr_Ptr Enchantix(Arr_Ptr* arr, int num_str);
+char* Enchantix(Arr_Ptr* arr, int num_str);
 
+
+// MAIN//////////////////////////////////////////////////////////////////////////////////////
 
 int main()
 {
@@ -31,28 +33,35 @@ int main()
         return 1;
     }
 
-   // printf("%p - array_main\n", array);
-    //printf("%p - &array_main\n", &array);
-
     Arr_Ptr array;
+
+    printf("%p - &array_main\n", &array);
+
 
     // read file and full of array
     Write_in_array(file, &array);
 
-    //printf("%p - after read array_main\n", array);
-    //printf("%p - after read &array_main\n", &array);
+
+    printf("\n\n");
+    printf("%p - after read array_main\n", array);
+    printf("%p - after read &array_main\n", &array);
 
     printf("Исходник\n");
     Output(&array);
 
 
     printf("\n\n");
-
+    printf("%p - before per array_main\n", array);
+    printf("%p - before per &array_main\n", &array);
 
     // перестановщик
     Permutator_str(&array);
 
+    printf("\n\n");
+    printf("%p - after per array_main\n", array);
+    printf("%p - after per &array_main\n", &array);
 
+    printf("\n\n");
     printf("Отсортированный\n");
     Output(&array);
 
@@ -62,87 +71,13 @@ int main()
 
 }
 
-
-int My_strcmp(Arr_Ptr arr, int num_str, int num_next_str)
-{
-
-
-    //printf("first_str = %s\n", array.ptr[num_str]);
-    //printf("second_str = %s\n", array.ptr[num_next_str]);
-
-
-    Enchantix(&arr, num_str);
-
-
-    Enchantix(&arr, num_next_str);
-
-   // printf("%p - array_my\n", array);
-    //printf("%p - &array_my\n", &array);
-
-    int compare = strcmp(arr.ptr[num_str], arr.ptr[num_next_str]);
-    return compare;
-
-}
-
-Arr_Ptr Permutator_str(Arr_Ptr* array)
-{
-
-
-    Arr_Ptr arr;
-
-
-    for(int i = 0; i < 3; i++)    //7
-    {
-        arr.ptr[i] = array->ptr[i];
-    }
-
-    for(int i = 0; i < 3; i++)    //7
-    {
-        printf("%s\n", arr.ptr[i]);
-    }
-
-   /* printf("%p - array_per\n", array);
-    printf("%p - &array_per\n", &array);
-    printf("%p - *array_per\n", *array);
-    printf("%p - arr_per\n", arr);
-    printf("%p - &arr_per\n", &arr);
-   // printf("%p - ptr[]", array->ptr[]);
-    printf("%p - array->ptr\n", array->ptr);
-    //printf("%p - *ptr[]", array->ptr[]);    */
-
-    char* free_str = "";
-
-    for(int j = 0; j < 3; j++)          //7
-    {
-        for(int i = 0; i + 1 < 3 ; i++)        //6
-        {
-            //printf("array[i] = %s\n", array->ptr[i]);
-            //printf("array[i+1] = %s\n", array->ptr[i+1]);
-
-            if(My_strcmp(arr, i, i+1) > 0)
-            {
-                printf ("SWAP\n");
-                free_str = array->ptr[i+1];
-                array->ptr[i+1] = array->ptr[i];
-                array->ptr[i] = free_str;
-            }
-        }
-    }
-
-    return *array;
-}
-
-void Output(Arr_Ptr* array)
-{
-    for(int i = 0; i < 3; i++)    //7
-    {
-        printf("%s\n", array->ptr[i]);
-    }
-}
-
+// WRITE_IN_ARRAY//////////////////////////////////////////////////////////////////////////////
 
 Arr_Ptr* Write_in_array(FILE* file, Arr_Ptr* array)
 {
+
+    assert (file != 0);
+    assert (array != 0);
 
     for(int i = 0; i < 3; i++)   //7
     {
@@ -160,31 +95,140 @@ Arr_Ptr* Write_in_array(FILE* file, Arr_Ptr* array)
 
     }
 
+    //printf("array1(w) = %p\n", array);
+    //printf("*array1(w) = %p\n", *array);
+
     return array;
 }
 
+// PERMUTATOR//////////////////////////////////////////////////////////////////////////////////////////////
 
-Arr_Ptr Enchantix(Arr_Ptr* arr, int num_str)
+Arr_Ptr Permutator_str(Arr_Ptr* array)
 {
+    assert (array != 0);
+
+    printf("\n\n");
+    printf("%p - array_per\n", array);
+    printf("%p - *array_per\n", *array);
+    //printf("%p - array->ptr\n", array->ptr);
+    //printf("%p - *(array->ptr)\n", *(array->ptr));
+
+
+    char* free_str = "";
+
+    for(int j = 0; j < 3; j++)          //7
+    {
+        for(int i = 0; i + 1 < 3 ; i++)        //6
+        {
+            //printf("array[i] = %s\n", array->ptr[i]);
+            //printf("array[i+1] = %s\n", array->ptr[i+1]);
+
+            int res_strcmp = My_strcmp(*array, i, i+1);
+
+            //printf("%d\n", res_strcmp);
+
+            if(res_strcmp > 0)
+            {
+                printf ("SWAP\n");
+                free_str = array->ptr[i+1];
+                array->ptr[i+1] = array->ptr[i];
+                array->ptr[i] = free_str;
+            }
+        }
+    }
+
+
+    printf("\n\n");
+    printf("%p - after array_per\n", array);
+    printf("%p - after *array_per\n", *array);
+
+    return *array;
+}
+
+
+//MY_STRRCMP////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int My_strcmp(Arr_Ptr array, int num_str, int num_next_str)
+{
+
+    printf("\n\n");
+    printf("%p - MY &array\n", &array);
+    printf("%p - MY array\n", array);
+
+
+    char* first_str = Enchantix(&array, num_str);
+
+
+
+    printf("\n\n");
+    printf("first_str = %s\n", first_str);
+    printf("first_str = %s\n", array.ptr[num_str]);
+
+
+
+    char* second_str = Enchantix(&array, num_next_str);
+
+
+    printf("\n\n");
+    printf("second_str = %s\n", second_str);
+    printf("second_str = %s\n", array.ptr[num_next_str]);
+
+
+    int compare = strcmp(array.ptr[num_str], array.ptr[num_next_str]);
+
+
+
+    printf("\n\n");
+    printf("%p - after MY &array\n", &array);
+    printf("%p - after MY array\n", array);
+    printf("%d", compare);
+
+    return compare;
+
+}
+
+
+// ENCHANTIX//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+char* Enchantix(Arr_Ptr* array, int num_str)
+{
+    assert (array != 0);
+
+    printf("\n\n");
+    printf("%p - EN array\n", array);
+    printf("%p - EN *array\n", *array);
 
     for(int times = 0; times < 85; times++)
     {
         for(int i = 0; i < 85; i++)
         {
-            arr->ptr[num_str][i] = tolower(arr->ptr[num_str][i]);     // small letters
+            array->ptr[num_str][i] = tolower(array->ptr[num_str][i]);     // small letters
 
-            int if_letter = isalpha(arr->ptr[num_str][i]);
+            int if_letter = isalpha(array->ptr[num_str][i]);
 
             int k = i;
 
             if (if_letter == 0)
             {
                 for(k; k+1 <= 85; k++)
-                    arr->ptr[num_str][k] = arr->ptr[num_str][k+1];
+                    array->ptr[num_str][k] = array->ptr[num_str][k+1];
             }
         }
     }
 
-    return *arr;
+    //printf("\n\n");
+    //printf("%s\n", array->ptr[num_str]);
 
+    return array->ptr[num_str];
+
+}
+
+void Output(Arr_Ptr* array)
+{
+    assert (array != 0);
+
+    for(int i = 0; i < 3; i++)    //7
+    {
+        printf("%s\n", array->ptr[i]);
+    }
 }
